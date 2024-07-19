@@ -49,7 +49,7 @@ class onJoinSound(minqlx.Plugin):
                     super().play_sound(self.db[onjoinsound_key])
 
     def handle_death(self, victim, killer, data):
-        if victim.steam_id == killer.steam_id or killer.steam_id == "":
+        if victim.steam_id == killer.steam_id or killer.steam_id == None:
             for p in self.players():
                 if self.db.get_flag(p, "essentials:sounds_enabled", default=True):
                     super().play_sound("sound/funnysounds/DumbWays.ogg")
