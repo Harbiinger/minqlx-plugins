@@ -3,7 +3,7 @@ import minqlx.database
 
 _onjoinsound_key = "minqlx:players:{}:onjoin_sound"
 
-class OnJoinSound(minqlx.Plugin):
+class onJoinSound(minqlx.Plugin):
     def __init__(self):
         self.add_hook("player_loaded", self.handle_player_loaded, priority=minqlx.PRI_LOWEST)
         self.add_command(("onjoinsound", "ojs"), self.cmd_onjoinsound, usage="<message>", client_cmd_perm=0)
