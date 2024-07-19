@@ -23,11 +23,14 @@ class onJoinSound(minqlx.Plugin):
         player.tell("That sound has been saved. To make me forget about it, a simple ^4{}onjoinsound^7 will do it.".format(self.get_cvar("qlx_commandPrefix")))
         return minqlx.RET_STOP_ALL
 
+    @minqlx.delay(2)
     def handle_player_loaded(self, player):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
         if onjoinsound_key in self.db:
             onjoin_sound = self.db[onjoinsound_key]
-            player.tell("playing sound :", onjoin_sound)
+            player.tell("[onJoinSound] playing sound:", onjoin_sound)
             for p in self.players():
                 if self.db.get_flag(p, "essentials:sounds_enabled", default=True):
                     super().play_sound(onjoin_sound)
+        else:
+            player.tell("Reminder! you can use ^4{}onjoinsound^7 to choose a sound that will be played when you join the server.".format(self.get_cvar("qlx_commandPrefix")))
