@@ -11,16 +11,17 @@ class OnJoinSound(minqlx.Plugin):
     def cmd_onjoinsound(self, player, msg, channel):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
         if len(msg) < 2:
-            return minqlx.RET_USAGE
-        else:
-            del self.db[onjoinsound_key]
-            player.tell("Your onjoin sound has been removed.")
-            return minqlx.RET_STOP_ALL
-    sound = str(" ".join(msg[1:]))
+            if onjoinsound_key not in self.db:
+                return minqlx.RET_USAGE
+            else:
+                del self.db[onjoinsound_key]
+                player.tell("Your onjoin sound has been removed.")
+                return minqlx.RET_STOP_ALL
+        sound = str(" ".join(msg[1:]))
 
-    self.db[onjoinsound_key] = sound
-    player.tell("That sound has been saved. To make me forget about it, a simple ^4{}onjoin^7 will do it.".format(self.get_cvar("qlx_commandPrefix")))
-    return minqlx.RET_STOP_ALL
+        self.db[onjoinsound_key] = sound
+        player.tell("That sound has been saved. To make me forget about it, a simple ^4{}onjoin^7 will do it.".format(self.get_cvar("qlx_commandPrefix")))
+        return minqlx.RET_STOP_ALL
 
     def handle_player_loaded(self, player):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
