@@ -6,6 +6,7 @@ _onjoinsound_key = "minqlx:players:{}:onjoin_sound"
 class onJoinSound(minqlx.Plugin):
     def __init__(self):
         self.add_hook("player_loaded", self.handle_player_loaded, priority=minqlx.PRI_LOWEST)
+        self.add_hook("death", self.handle_death)
         self.add_command(("onjoinsound", "ojs"), self.cmd_onjoinsound, usage="<sound path> (ex: !ojs sound/funnysounds/imperial.ogg)", client_cmd_perm=0)
         self.add_command(("forcejoinsound", "fjs"), self.cmd_forcejoinsound, usage="<player steam_id> <sound path>", client_cmd_perm=4)
 
@@ -46,3 +47,6 @@ class onJoinSound(minqlx.Plugin):
             for p in self.players():
                 if self.db.get_flag(p, "essentials:sounds_enabled", default=True):
                     super().play_sound(self.db[onjoinsound_key])
+
+    def handle_death(self, victim, killer, data):
+        self.play_sound("sound/funnysounds/DumbWays.ogg")
