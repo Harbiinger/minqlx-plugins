@@ -1,5 +1,4 @@
 import minqlx
-import minqlx.database
 
 _onjoinsound_key = "minqlx:players:{}:onjoin_sound"
 
@@ -27,7 +26,9 @@ class onJoinSound(minqlx.Plugin):
     def handle_player_loaded(self, player):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
         if onjoinsound_key in self.db:
-            player.tell("{}".format(onjoinsound_key))
+            if onjoinsound_key not in self.db:
+                player.tell("No sound saved.")
+                return minqlx.RET_STOP_ALL
             onjoin_sound = self.db[onjoinsound_key]
             player.tell("[onJoinSound] playing sound:", onjoin_sound)
             for p in self.players():
