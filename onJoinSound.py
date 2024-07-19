@@ -1,4 +1,5 @@
 import minqlx
+import re
 
 _onjoinsound_key = "minqlx:players:{}:onjoin_sound"
 
@@ -6,7 +7,7 @@ class onJoinSound(minqlx.Plugin):
     def __init__(self):
         self.add_hook("player_loaded", self.handle_player_loaded, priority=minqlx.PRI_LOWEST)
         self.add_command(("onjoinsound", "ojs"), self.cmd_onjoinsound, usage="<sound path> (ex: !ojs sound/funnysounds/imperial.ogg)", client_cmd_perm=0)
-        self.add_command(("forcejoinsound", "fjs"), self.cmd_forcejoinsound, usage="<sound path> <player steam_id>", client_cmd_perm=4)
+        self.add_command(("forcejoinsound", "fjs"), self.cmd_forcejoinsound, usage="<player steam_id> <sound path>", client_cmd_perm=4)
 
     def cmd_onjoinsound(self, player, msg, channel):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
@@ -24,12 +25,21 @@ class onJoinSound(minqlx.Plugin):
         return minqlx.RET_STOP_ALL
 
     def cmd_forcejoinsound(self, player, msg, channel):
-        args = msg.split(" ")
-        for a in args:
-            player.tell(a)
-        return minqlx.RET_STOP_ALL
+        if not re.match(r'^\d+$', msg[1]):
+            player.tell("Incorrect steam_id format.")
+            return minqlx.RET_STOP_ALL 
+        onjoinsound_key = _onjoinsound_key.format(msg[1])
+        if len(msg) < 3:
+            if onjoinsound_key not in self.db:
+                return minqlx.RET_USAGE
+            else:
+                del self.db[onjoinsound_key]
+                player.tell("The onjoin sound for {} has been removed.".format(msg[1]))
+                return minqlx.RET_STOP_ALL
+        sound = str(" ".join(msg[2]))
+        self.db[onjoinsound_key] = sound
+        player.tell("That sound ({}) has been saved. To make me forget about it, a simple ^4{}forcejoinsound {}^7 will do it.".format(sound, self.get_cvar("qlx_commandPrefix", msg[1])))
 
-    @minqlx.delay(2)
     def handle_player_loaded(self, player):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
         if onjoinsound_key in self.db:
