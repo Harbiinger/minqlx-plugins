@@ -20,7 +20,7 @@ class onJoinSound(minqlx.Plugin):
         sound = str(" ".join(msg[1:]))
 
         self.db[onjoinsound_key] = sound
-        player.tell("That sound has been saved. To make me forget about it, a simple ^4{}onjoinsound^7 will do it.".format(self.get_cvar("qlx_commandPrefix")))
+        player.tell("That sound ({}) has been saved. To make me forget about it, a simple ^4{}onjoinsound^7 will do it.".format(sound, self.get_cvar("qlx_commandPrefix")))
         return minqlx.RET_STOP_ALL
 
     @minqlx.delay(2)
