@@ -25,7 +25,7 @@ class OnJoinSound(minqlx.Plugin):
     def handle_player_loaded(self, player):
         onjoinsound_key = _onjoinsound_key.format(player.steam_id)
         if onjoin_key in self.db:
-            onjoin_sound = self.db.[onjoinsound_key]
+            onjoin_sound = self.db[onjoinsound_key]
             for p in self.players():
                 if self.db.get_flag(p, "essentials:sounds_enabled", default=True):
                     super().play_sound(onjoin_sound)
