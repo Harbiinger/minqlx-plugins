@@ -50,3 +50,4 @@ class onJoinSound(minqlx.Plugin):
 
     def handle_death(self, victim, killer, data):
         self.play_sound("sound/funnysounds/DumbWays.ogg")
+        victim.tell(killer.steam_id)
