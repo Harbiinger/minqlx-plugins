@@ -29,6 +29,7 @@ class onJoinSound(minqlx.Plugin):
             if onjoinsound_key not in self.db:
                 player.tell("No sound saved.")
                 return minqlx.RET_STOP_ALL
+            player.tell("{}".format(self.db[onjoinsound_key]))
             onjoin_sound = self.db[onjoinsound_key]
             player.tell("[onJoinSound] playing sound:", onjoin_sound)
             for p in self.players():
