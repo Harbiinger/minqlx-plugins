@@ -7,7 +7,7 @@ class whitelist(minqlx.Plugin):
     def __init__(self):
         self.add_command(("whitelistadd", "wladd"), self.cmd_whitelistadd, usage="<steam_id>", client_cmd_perm=5)
         self.add_command(("whitelistremove", "wlrem"), self.cmd_whitelistremove, usage="<steam_id>", client_cmd_perm=5)
-        self.add_hook("player_loaded", self.handle_player_loaded)
+        self.add_hook("player_connect", self.handle_player_connect)
 
     def cmd_whitelistadd(self, player, msg, channel):
         if not re.match(r'^\d+$', msg[1]): # test this
@@ -37,7 +37,7 @@ class whitelist(minqlx.Plugin):
         else:
             player.tell("This steam_id is not whitelisted.")
 
-    def handle_player_loaded(self, player):
+    def handle_player_connect(self, player):
         whitelist_key = _whitelist_key.format(player.steam_id)
         if whitelist_key not in self.db:
             player.kick("You are not whitelisted on this server.")
