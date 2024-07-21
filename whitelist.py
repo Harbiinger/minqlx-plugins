@@ -21,7 +21,8 @@ class whitelist(minqlx.Plugin):
 
         if whitelist_key not in self.db:
             self.db[whitelist_key] = True
-            player.tell("steam_id added to the whitelist.")
+            if player != None:
+                player.tell("steam_id added to the whitelist.")
 
         elif player != None:
             player.tell("This steam_id is already whitelisted.")
