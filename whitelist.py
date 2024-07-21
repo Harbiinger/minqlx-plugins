@@ -8,9 +8,12 @@ class whitelist(minqlx.Plugin):
         self.add_command(("whitelistadd", "wladd"), self.cmd_whitelistadd, usage="<steam_id>", client_cmd_perm=5)
         self.add_command(("whitelistremove", "wlrem"), self.cmd_whitelistremove, usage="<steam_id>", client_cmd_perm=5)
         self.add_hook("player_connect", self.handle_player_connect)
+        
+        admin = self.get_cvar("qlx_owner", str)
+        self.cmd_whitelistadd(None, [None, admin], None)
 
     def cmd_whitelistadd(self, player, msg, channel):
-        if not re.match(r'^\d+$', msg[1]): # test this
+        if not re.match(r'^\d+$', msg[1]):
             player.tell("Incorrect steam_id.")
             return minqlx.RET_STOP_ALL
 
@@ -20,11 +23,11 @@ class whitelist(minqlx.Plugin):
             self.db[whitelist_key] = True
             player.tell("steam_id added to the whitelist.")
 
-        else:
+        elif player != None:
             player.tell("This steam_id is already whitelisted.")
 
     def cmd_whitelistremove(self, player, msg, channel):
-        if not re.match(r'^\d+$', msg[1]): # test this
+        if not re.match(r'^\d+$', msg[1]):
             player.tell("Incorrect steam_id.")
             return minqlx.RET_STOP_ALL
 
