@@ -32,5 +32,5 @@ class serverPoints(minqlx.Plugin):
         pass #TODO 
 
     def handle_server_command(self, player, cmd):
-        if cmd[0] == 'chat':
+        if cmd[0] == 'say':
             player.tell(player)
